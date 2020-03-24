@@ -5,25 +5,21 @@ class Board {
     this.applePosition = applePosition;
   }
 
-  render() {
-    const board = Array.from(Array(this.boardDimensions[0]),
-      () => new Array(this.boardDimensions[1]).fill(0));
+  calculateBoard(snakeBody, applePosition, boardDimensions) {
+    const board = Array.from(Array(boardDimensions[0]),
+      () => new Array(boardDimensions[1]).fill(0));
 
-    const newSnakeBody = this.snake.snakeBody.slice();
-    const snakeHead = newSnakeBody.pop();
-    const newHead = { ...snakeHead };
-
-    if (newHead.x > this.boardDimensions[0] - 1 || newHead.y > this.boardDimensions[1] - 1
-         || newHead.x < 0 || newHead.y < 0) {
-      throw new Error('the snake hit a wall');
-    }
-    this.snake.snakeBody.forEach((element) => {
+    snakeBody.forEach((element) => {
       board[element.x][element.y] = 'x';
     });
 
-    board[this.applePosition[0].x][this.applePosition[0].y] = 'A';
-
-    // eslint-disable-next-line no-console
+    board[applePosition.x][applePosition.y] = 'A';
+    
+    return board;
+  }
+  
+  render() {
+    const board = this.calculateBoard(this.snake.snakeBody, this.applePosition, this.boardDimensions);
     console.info(board);
     // eslint-disable-next-line no-console
     console.log('___________________');

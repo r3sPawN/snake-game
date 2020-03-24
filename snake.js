@@ -14,8 +14,14 @@ class Snake {
     this.snakeBody = Snake.calculateSnakeBody(direction, this.snakeBody);
   }
 
+  increaseSnakeSize() {
+    const newSnakeBody = this.snakeBody.slice();
+    const Tail = newSnakeBody.shift();
+    this.snakeBody.unshift(Tail);
+  }
+
   static calculateSnakeBody(direction, snakeBody) {
-    if (DIRECTIONS.UP !== direction && DIRECTIONS.UP !== direction
+    if (DIRECTIONS.UP !== direction && DIRECTIONS.DOWN !== direction
              && DIRECTIONS.LEFT !== direction && DIRECTIONS.RIGHT !== direction) {
       throw new Error('wrong input');
     }

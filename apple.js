@@ -2,17 +2,21 @@ class Apple {
   constructor(snakeBody, boardDimensions) {
     this.snakeBody = snakeBody;
     this.boardDimensions = boardDimensions;
-    this.applePosition = this.setApplePosition();
+    this.applePosition = Apple.generateApplePosition(boardDimensions, snakeBody);
   }
 
-  setApplePosition() {
-    const randomX = Math.floor(Math.random() * this.boardDimensions[0]);
-    const randomY = Math.floor(Math.random() * this.boardDimensions[1]);
+  setNewApplePosition() {
+    this.applePosition = Apple.generateApplePosition(this.boardDimensions, this.snakeBody);
+  }
 
-    const ApplePosition = [{ x: randomX, y: randomY }];
-    if (this.snakeBody.some((element) => element.x === ApplePosition[0].x
-        && element.y === ApplePosition[0].y)) {
-      this.applePosition = this.setApplePosition();
+  static generateApplePosition(boardDimensions, snakeBody) {  
+    const randomX = Math.floor(Math.random() * boardDimensions[0]);
+    const randomY = Math.floor(Math.random() * boardDimensions[1]);
+
+    const ApplePosition = { x: randomX, y: randomY };
+    if (snakeBody.some((element) => element.x === ApplePosition.x
+        && element.y === ApplePosition.y)) {
+      this.generateApplePosition(boardDimensions, snakeBody);
     }
 
     return ApplePosition;
@@ -23,8 +27,7 @@ class Apple {
     const snakeHead = newSnakeBody.pop();
     const newHead = { ...snakeHead };
 
-    if (this.applePosition.some((element, index) => this.applePosition[index].x === newHead.x
-    && this.applePosition[index].y === newHead.y)) {
+    if (this.applePosition.x === newHead.x && this.applePosition.y === newHead.y) {
       return true;
     }
     return false;
